@@ -1,9 +1,25 @@
 # GRF EEG MobileBCI Denoising Benchmark
 
 This project benchmarks ASR and an iCanClean-style CCA regression cleaner on the
-MobileBCI BrainVision EEG/IMU files in `Motion_eeg_data`.
+MobileBCI BrainVision EEG/IMU files from https://github.com/ChenfeiJiangSICAU/MobileBCI_Data.
 
 The default run uses the three local subjects and the dataset speed mapping:
+## Method Notes
+
+ASR is implemented as an artifact-subspace reconstruction style cleaner:
+ERP calibrates a clean covariance per subject, then each moving-speed
+recording is windowed, whitened against that covariance, and high-variance
+subspaces above the cutoff are reconstructed.
+
+iCanClean is implemented as a CCA-based noise-reference cleaner:
+EEG and IMU motion channels are band-limited to the gait-artifact range,
+canonical EEG components correlated with IMU references are identified, and
+their regression contribution is removed from the broadband EEG.
+
+These implementations are intended for a reproducible Python benchmark and
+parameter comparison. For strict replication of EEGLAB plugin internals, replace
+`src/grf_eeg/denoise.py` with the exact plugin output and keep the same
+evaluation modules.
 
 | Session | Meaning | Speed |
 | --- | --- | --- |
@@ -13,9 +29,6 @@ The default run uses the three local subjects and the dataset speed mapping:
 | `ses-04` | fast walking | 1.6 m/s |
 | `ses-05` | slight running | 2.0 m/s |
 
-The repository `MobileBCI_Data_repo` is kept as the source Matlab reference.
-This Python implementation reads the same BrainVision/BIDS-style files directly,
-so Matlab, BBCI, EEGLAB, and MNE are not required.
 
 ## What It Produces
 
@@ -28,10 +41,6 @@ Running the pipeline creates:
 - ASR cutoff sensitivity
 - ERP LDA AUC and SSVEP CCA accuracy by speed
 
-Outputs are written to:
-
-- `outputs/tables/*.csv`
-- `outputs/figures/*.png`
 
 ## Install
 
@@ -74,22 +83,7 @@ Change ASR settings:
 python run_pipeline.py --asr-cutoff 8 --asr-sensitivity-cutoffs 3 5 8 10 15 20
 ```
 
-## Method Notes
 
-ASR is implemented as an artifact-subspace reconstruction style cleaner:
-`ses-01` ERP calibrates a clean covariance per subject, then each moving-speed
-recording is windowed, whitened against that covariance, and high-variance
-subspaces above the cutoff are reconstructed.
-
-iCanClean is implemented as a CCA-based noise-reference cleaner:
-EEG and IMU motion channels are band-limited to the gait-artifact range,
-canonical EEG components correlated with IMU references are identified, and
-their regression contribution is removed from the broadband EEG.
-
-These implementations are intended for a reproducible Python benchmark and
-parameter comparison. For strict replication of EEGLAB plugin internals, replace
-`src/grf_eeg/denoise.py` with the exact plugin output and keep the same
-evaluation modules.
 
 ## Data Sources
 
