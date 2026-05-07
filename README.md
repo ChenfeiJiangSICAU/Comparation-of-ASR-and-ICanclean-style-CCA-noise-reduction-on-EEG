@@ -17,10 +17,7 @@ canonical EEG components correlated with IMU references are identified, and
 their regression contribution is removed from the broadband EEG.
 
 These implementations are intended for a reproducible Python benchmark and
-parameter comparison. For strict replication of EEGLAB plugin internals, replace
-`src/grf_eeg/denoise.py` with the exact plugin output and keep the same
-evaluation modules.
-
+parameter comparison. 
 | Session | Meaning | Speed |
 | --- | --- | --- |
 | `ses-01` | ERP training session | training |
