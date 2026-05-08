@@ -1,4 +1,4 @@
-# GRF EEG MobileBCI Denoising Benchmark
+# IMU EEG MobileBCI Denoising Benchmark
 
 This project benchmarks ASR and an iCanClean-style CCA regression cleaner on the
 MobileBCI BrainVision EEG/IMU files from https://github.com/ChenfeiJiangSICAU/MobileBCI_Data.
